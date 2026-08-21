@@ -225,7 +225,7 @@
             font-size: 1rem;
             transition: 0.2s;
         }
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             outline: 2px solid #a67c4e;
             border-color: transparent;
             background: #fffcf7;
@@ -353,6 +353,14 @@
             margin: 12px 0;
             font-size: 0.9rem;
         }
+        .payment-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        .icon-vodafone { color: #e67e22; }
+        .icon-etisalat { color: #6c3b8c; }
+        .icon-instapay { color: #2d7a3b; }
+        .icon-orange { color: #ff6600; }
         @media (max-width: 600px) {
             .main-card { padding: 1.8rem; }
             .popup-card { padding: 1.8rem; }
@@ -414,6 +422,19 @@
                     <input type="text" id="studentId" placeholder="e.g. 302040501234" required>
                 </div>
 
+                <!-- University Dropdown -->
+                <div class="form-group">
+                    <label data-en="University" data-ar="الجامعة">University</label>
+                    <select id="universitySelect" required>
+                        <option value="" data-en="Select your university" data-ar="اختر جامعتك">Select your university</option>
+                        <option value="Cairo University" data-en="Cairo University" data-ar="جامعة القاهرة">Cairo University</option>
+                        <option value="Ain Shams University" data-en="Ain Shams University" data-ar="جامعة عين شمس">Ain Shams University</option>
+                        <option value="Alexandria University" data-en="Alexandria University" data-ar="جامعة الإسكندرية">Alexandria University</option>
+                        <option value="Mansoura University" data-en="Mansoura University" data-ar="جامعة المنصورة">Mansoura University</option>
+                        <option value="Zagazig University" data-en="Zagazig University" data-ar="جامعة الزقازيق">Zagazig University</option>
+                    </select>
+                </div>
+
                 <!-- price (fixed 1000 EGP) -->
                 <div class="price-line">
                     <span data-en="Total" data-ar="الإجمالي">Total</span>
@@ -430,16 +451,33 @@
                 <!-- Step 2: payment steps (hidden initially) -->
                 <div id="stepPayment" class="hidden-step">
                     <div class="payment-step">
-                        <h4><i class="fas fa-wallet"></i> <span data-en="Step 1 · Vodafone Cash" data-ar="الخطوة ١ · فودافون كاش">Step 1 · Vodafone Cash</span></h4>
-                        <div class="phone-display">
-                            <i class="fas fa-wallet" style="color: #e67e22;"></i> <span id="vodafoneNumber">010 1234 5670</span>
-                            <span style="font-weight:400; font-size:0.8rem; color:#5f6b7a;" data-en="(default)" data-ar="(افتراضي)">(default)</span>
+                        <h4><i class="fas fa-wallet"></i> <span data-en="Step 1 · Choose Payment Method" data-ar="الخطوة ١ · اختر طريقة الدفع">Step 1 · Choose Payment Method</span></h4>
+                        
+                        <!-- Payment Method Dropdown -->
+                        <div class="form-group">
+                            <label data-en="Payment Method" data-ar="طريقة الدفع">Payment Method</label>
+                            <select id="paymentMethod" required>
+                                <option value="" data-en="Select payment method" data-ar="اختر طريقة الدفع">Select payment method</option>
+                                <option value="vodafone" data-en="Vodafone Cash" data-ar="فودافون كاش">Vodafone Cash</option>
+                                <option value="etisalat" data-en="Etisalat" data-ar="اتصالات">Etisalat</option>
+                                <option value="instapay" data-en="Instapay" data-ar="إنستاباي">Instapay</option>
+                                <option value="orange" data-en="Orange Cash" data-ar="أورنج كاش">Orange Cash</option>
+                            </select>
                         </div>
-                        <p style="margin: 6px 0 10px 0; background: #e7ddd0; padding: 8px 16px; border-radius: 30px; display: inline-block;">
-                            <span data-en="Send 1000 EGP to this number" data-ar="أرسل ١٠٠٠ جنيه لهذا الرقم">Send 1000 EGP to this number</span>
-                        </p>
-                        <div style="font-size:0.9rem; color:#2f4b3a; margin-top: 6px;">
-                            <i class="fas fa-info-circle"></i> <span data-en="After completing the transfer, proceed to upload your receipt" data-ar="بعد إتمام التحويل، تابع لرفع إيصالك">After completing the transfer, proceed to upload your receipt</span>
+
+                        <!-- Dynamic Payment Number Display -->
+                        <div id="paymentNumberDisplay" style="display: none;">
+                            <div class="phone-display">
+                                <i id="paymentIcon" class="fas fa-wallet" style="color: #e67e22;"></i>
+                                <span id="paymentNumber">010 1234 5670</span>
+                                <span style="font-weight:400; font-size:0.8rem; color:#5f6b7a;" data-en="(send to this number)" data-ar="(أرسل لهذا الرقم)">(send to this number)</span>
+                            </div>
+                            <p style="margin: 6px 0 10px 0; background: #e7ddd0; padding: 8px 16px; border-radius: 30px; display: inline-block;">
+                                <span data-en="Send 1000 EGP to this number" data-ar="أرسل ١٠٠٠ جنيه لهذا الرقم">Send 1000 EGP to this number</span>
+                            </p>
+                            <div style="font-size:0.9rem; color:#2f4b3a; margin-top: 6px;">
+                                <i class="fas fa-info-circle"></i> <span data-en="After completing the transfer, proceed to upload your receipt" data-ar="بعد إتمام التحويل، تابع لرفع إيصالك">After completing the transfer, proceed to upload your receipt</span>
+                            </div>
                         </div>
                     </div>
 
@@ -456,7 +494,7 @@
                         </div>
                         <div class="note-box">
                             <i class="fas fa-info-circle" style="color: #e67e22;"></i>
-                            <span data-en="Note: you will receive a confirmation email, please make sure to reply to that email with a payment screenshot to confirm the registration." data-ar="ملاحظة: ستتلقى رسالة تأكيد عبر البريد الإلكتروني؛ يرجى الحرص على الرد عليها وإرفاق لقطة شاشة لعملية الدفع لتأكيد التسجيل.   .">
+                            <span data-en="Note: you will receive a confirmation email, please make sure to reply to that email with a payment screenshot to confirm the registration." data-ar="ملاحظة: ستتلقى رسالة تأكيد عبر البريد الإلكتروني؛ يرجى الحرص على الرد عليها وإرفاق لقطة شاشة لعملية الدفع لتأكيد التسجيل.">
                                 Note: you will receive a confirmation email, please make sure to reply to that email with a payment screenshot to confirm the registration.
                             </span>
                         </div>
@@ -486,6 +524,38 @@
             // Initialize EmailJS
             emailjs.init(EMAILJS_PUBLIC_KEY);
 
+            // ---------- PAYMENT METHOD CONFIGURATION ----------
+            const PAYMENT_METHODS = {
+                vodafone: {
+                    name: 'Vodafone Cash',
+                    number: '010 1234 5678',
+                    icon: 'fa-wallet',
+                    iconColor: '#e67e22',
+                    iconClass: 'icon-vodafone'
+                },
+                etisalat: {
+                    name: 'Etisalat',
+                    number: '011 2345 6789',
+                    icon: 'fa-mobile-alt',
+                    iconColor: '#6c3b8c',
+                    iconClass: 'icon-etisalat'
+                },
+                instapay: {
+                    name: 'Instapay',
+                    number: '012 3456 7890',
+                    icon: 'fa-bolt',
+                    iconColor: '#2d7a3b',
+                    iconClass: 'icon-instapay'
+                },
+                orange: {
+                    name: 'Orange Cash',
+                    number: '010 9876 5432',
+                    icon: 'fa-circle',
+                    iconColor: '#ff6600',
+                    iconClass: 'icon-orange'
+                }
+            };
+
             // ---------- DOM REFS ----------
             const overlay = document.getElementById('popupOverlay');
             const openBtn = document.getElementById('registerMainBtn');
@@ -494,17 +564,31 @@
             const fullName = document.getElementById('fullName');
             const email = document.getElementById('email');
             const studentId = document.getElementById('studentId');
+            const universitySelect = document.getElementById('universitySelect');
+            const paymentMethod = document.getElementById('paymentMethod');
+            const paymentNumberDisplay = document.getElementById('paymentNumberDisplay');
+            const paymentNumber = document.getElementById('paymentNumber');
+            const paymentIcon = document.getElementById('paymentIcon');
             const receiptUpload = document.getElementById('receiptUpload');
             const receiptPreview = document.getElementById('receiptPreview');
             const statusMsg = document.getElementById('statusMessage');
             const step1Btn = document.getElementById('step1Btn');
             const stepPersonal = document.getElementById('stepPersonal');
             const stepPayment = document.getElementById('stepPayment');
-            const vodafoneSpan = document.getElementById('vodafoneNumber');
 
-            // default vodafone number (editable from source)
-            const DEFAULT_VODAFONE = '010 1234 0000';
-            vodafoneSpan.textContent = DEFAULT_VODAFONE;
+            // ---------- PAYMENT METHOD CHANGE HANDLER ----------
+            paymentMethod.addEventListener('change', function() {
+                const selected = this.value;
+                if (selected && PAYMENT_METHODS[selected]) {
+                    const method = PAYMENT_METHODS[selected];
+                    paymentNumber.textContent = method.number;
+                    paymentIcon.className = `fas ${method.icon}`;
+                    paymentIcon.style.color = method.iconColor;
+                    paymentNumberDisplay.style.display = 'block';
+                } else {
+                    paymentNumberDisplay.style.display = 'none';
+                }
+            });
 
             // ---------- LANGUAGE TOGGLE ----------
             const langBtns = document.querySelectorAll('.lang-btn');
@@ -515,11 +599,20 @@
                 langBtns.forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.lang === lang);
                 });
+                
+                // Update all elements with data-en/data-ar
                 document.querySelectorAll('[data-en][data-ar]').forEach(el => {
                     if (lang === 'en') el.textContent = el.dataset.en;
                     else el.textContent = el.dataset.ar;
                 });
-                // update placeholders
+                
+                // Update select options with data-en/data-ar
+                document.querySelectorAll('select option[data-en][data-ar]').forEach(opt => {
+                    if (lang === 'en') opt.textContent = opt.dataset.en;
+                    else opt.textContent = opt.dataset.ar;
+                });
+                
+                // Update placeholders
                 document.querySelectorAll('input[placeholder]').forEach(inp => {
                     const en = inp.getAttribute('data-placeholder-en');
                     const ar = inp.getAttribute('data-placeholder-ar');
@@ -527,12 +620,14 @@
                         inp.placeholder = (lang === 'en') ? en : ar;
                     }
                 });
-                // update button texts
-                document.querySelectorAll('button[data-en][data-ar], .register-btn span, .footnote, .popup-title span, .submit-reg-btn span, .upload-area p, .receipt-preview span, .payment-step p span, .payment-step h4 span, .price-line span, .form-group label, .info-item, .note-box span').forEach(el => {
+                
+                // Update button texts
+                document.querySelectorAll('button[data-en][data-ar], .register-btn span, .footnote, .popup-title span, .submit-reg-btn span, .upload-area p, .receipt-preview span, .payment-step p span, .payment-step h4 span, .price-line span, .form-group label, .info-item, .note-box span, .phone-display span').forEach(el => {
                     if (el.dataset.en && el.dataset.ar) {
                         el.textContent = (lang === 'en') ? el.dataset.en : el.dataset.ar;
                     }
                 });
+                
                 const step1Span = step1Btn.querySelector('span');
                 if (step1Span && step1Span.dataset.en && step1Span.dataset.ar) {
                     step1Span.textContent = (lang === 'en') ? step1Span.dataset.en : step1Span.dataset.ar;
@@ -564,6 +659,9 @@
                 // reset steps: show personal, hide payment
                 stepPersonal.classList.remove('hidden-step');
                 stepPayment.classList.add('hidden-step');
+                // reset payment method display
+                paymentMethod.value = '';
+                paymentNumberDisplay.style.display = 'none';
                 // reapply lang
                 setLanguage(currentLang);
             }
@@ -582,6 +680,8 @@
                 const name = fullName.value.trim();
                 const mail = email.value.trim();
                 const id = studentId.value.trim();
+                const uni = universitySelect.value;
+                
                 if (!name || !mail || !id) {
                     statusMsg.style.display = 'block';
                     statusMsg.className = 'status-msg error';
@@ -589,12 +689,17 @@
                     statusMsg.textContent = msg;
                     return;
                 }
+                if (!uni) {
+                    statusMsg.style.display = 'block';
+                    statusMsg.className = 'status-msg error';
+                    const msg = currentLang === 'en' ? '⚠️ Please select your university.' : '⚠️ يرجى اختيار جامعتك.';
+                    statusMsg.textContent = msg;
+                    return;
+                }
                 // hide personal, show payment
                 stepPersonal.classList.add('hidden-step');
                 stepPayment.classList.remove('hidden-step');
                 statusMsg.style.display = 'none';
-                // set default vodafone number
-                vodafoneSpan.textContent = DEFAULT_VODAFONE;
             });
 
             // ---------- FILE UPLOAD PREVIEW ----------
@@ -615,13 +720,21 @@
                 const name = fullName.value.trim();
                 const mail = email.value.trim();
                 const id = studentId.value.trim();
+                const uni = universitySelect.value;
+                const method = paymentMethod.value;
                 const file = receiptUpload.files[0];
 
                 // validation
-                if (!name || !mail || !id) {
+                if (!name || !mail || !id || !uni) {
                     statusMsg.style.display = 'block';
                     statusMsg.className = 'status-msg error';
                     statusMsg.textContent = currentLang === 'en' ? '⚠️ Missing personal details.' : '⚠️ بيانات شخصية ناقصة.';
+                    return;
+                }
+                if (!method) {
+                    statusMsg.style.display = 'block';
+                    statusMsg.className = 'status-msg error';
+                    statusMsg.textContent = currentLang === 'en' ? '⚠️ Please select a payment method.' : '⚠️ يرجى اختيار طريقة الدفع.';
                     return;
                 }
                 if (!file) {
@@ -631,17 +744,21 @@
                     return;
                 }
 
+                const paymentInfo = PAYMENT_METHODS[method];
+                const paymentNumberValue = paymentInfo ? paymentInfo.number : 'N/A';
+
                 // prepare data
                 const templateParams = {
                     from_name: name,
                     from_email: mail,
                     student_id: id,
-                    phone: vodafoneSpan.textContent,
+                    university: uni,
+                    payment_method: method ? paymentInfo.name : 'N/A',
+                    payment_number: paymentNumberValue,
                     total_amount: '1000 EGP',
                     receipt_file: file.name || 'no file',
                     registration_date: new Date().toLocaleString(),
-                    university: 'Cairo University',
-                    test: 'TOEFL iBT 2026',
+                    test: 'ATEFL 2026',
                     test_date: '24-31 August 2026',
                     test_time: '12:00 PM'
                 };
@@ -660,6 +777,7 @@
                             '✅ تم إرسال التسجيل بنجاح! تحقق من بريدك الإلكتروني. <i class="fas fa-smile"></i>';
                         form.reset();
                         receiptPreview.innerHTML = `<i class="fas fa-file-image"></i> <span data-en="No file selected" data-ar="لم يتم اختيار ملف">No file selected</span>`;
+                        paymentNumberDisplay.style.display = 'none';
                         setTimeout(() => { closePopup(); }, 3000);
                     }, function(error) {
                         statusMsg.style.display = 'block';
